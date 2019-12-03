@@ -17,4 +17,6 @@ public class Exceptions {
 		logger.warn("SQL State: {}", e.getSQLState());
 		logger.warn("Stack Trace: ", e);
 	}
+	
+	
 }
