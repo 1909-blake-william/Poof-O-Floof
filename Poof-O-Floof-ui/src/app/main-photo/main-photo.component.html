@@ -1,20 +1,11 @@
 <p>main-photo works!</p>
-<h2>Products</h2>
 
-<div *ngFor="let product of Products">
+<button (click)="getNewPhotoUrl()">
+  Get New Photo
+</button>
+<br />
+<br />
 
-  <h3>
-    <a [title]="product.name + ' details'">
-      {{ product.name }}
-    </a>
-  </h3>
-
-  <p *ngIf="product.description">
-    Description: {{ product.description }}
-  </p>
-
-</div>
-
-<div *ngFor="let photo of Photos">
-  <img *ngIf="photo.large" src="{{ photo.large }}">
+<div>
+  <img src="{{photoUrl}}">
 </div>
