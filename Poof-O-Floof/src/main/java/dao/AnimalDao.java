@@ -1,19 +1,14 @@
 package dao;
 
 import model.AnimalBasic;
-import model.AnimalFull;
 
 public interface AnimalDao {
 
 	/************************************************
 	 * 					Save Logic					*
 	 ***********************************************/
-	/**
-	 * Save full animal to DB? Currently confused with Hao's DB design. I cannot tell what we are keeping or removing.
-	 * @param animalFull
-	 * @return
-	 */
-	boolean saveFullAnimal(AnimalFull animalFull);
+
+	boolean saveBasicAnimal(AnimalBasic animalBasic);
 	
 	/**
 	 * save the information of a favorite picture
@@ -27,6 +22,8 @@ public interface AnimalDao {
 	 * 					Update Logic				*
 	 ***********************************************/
 	boolean updateDailyLikes(AnimalBasic animalBasic);
+	
+	//maybe have a function to reset daily likes
 	
 	boolean updateTotalLikes(AnimalBasic animalBasic);
 

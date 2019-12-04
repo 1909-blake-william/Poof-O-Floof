@@ -1,4 +1,4 @@
-package database;
+package databaseTest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,11 +14,5 @@ public class ConnectionTest {
 	@Test
 	public void connectionFactory_SmokeTest() {
 		assert ConnectionUtil.getConnection() != null;
-	}
-	
-	@Test
-	public void connectionTestAPI() {
-		
-		
 	}
 }
