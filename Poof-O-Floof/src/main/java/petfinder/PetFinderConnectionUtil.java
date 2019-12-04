@@ -17,6 +17,9 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * 
  * @author Hao
@@ -28,7 +31,7 @@ public class PetFinderConnectionUtil {
 	private static final Pattern pat = Pattern.compile(".*\"access_token\"\\s*:\\s*\"([^\"]+)\".*");
 	private static Logger logger = LogManager.getRootLogger();
 	private static Properties props = getProperties();
-	
+
 	private static final String PET_FINDER_API_KEY = props.getProperty("petfinder.key");
 	private static final String PET_FINDER_SECRET = props.getProperty("petfinder.secret");
 	private static final String TOKEN_URL = "https://api.petfinder.com/v2/oauth2/token";
@@ -40,9 +43,10 @@ public class PetFinderConnectionUtil {
 
 	private PetFinderConnectionUtil() {
 	}
-	
+
 	/**
 	 * load properties from application.properties
+	 * 
 	 * @return
 	 */
 	private static Properties getProperties() {
@@ -108,7 +112,8 @@ public class PetFinderConnectionUtil {
 	 * @param radius:   in miles
 	 * @throws MalformedURLException
 	 */
-	public void requestAnimalsByLocation(String location, int radius) throws MalformedURLException {
+	public String requestAnimalsByLocation(String location, int radius) throws MalformedURLException {
+		JsonNode jsonNode = null;
 		String params = String.format("?location=%s&radius=%d", location, radius);
 		URL apiUrl = new URL(PET_FINDER_API_ANIMALS + params);
 		BufferedReader reader = null;
@@ -126,9 +131,61 @@ public class PetFinderConnectionUtil {
 			}
 			String response = out.toString();
 			logger.debug(response);
+			StringBuilder sbResponse = parseOutAnimalInformation(response);
+			if (null != sbResponse) {
+				return "[" + sbResponse + "]";
+			} else {
+				logger.debug("animal Json object was null {}", sbResponse);
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.warn("Exception Message: {}", e.getMessage());
+			logger.warn("Stack Trace: ", e);
 		}
+		return null;
+	}
+
+	/**
+	 * This will build a JSON out of the response from petfinder.com for our needs.
+	 * id and photos.
+	 * If there is an animal without photos, that animal will be removed from the creation.
+	 * @param response = the information from petfinder.com 
+	 * @return StringBuilder JSON value OR NULL. if null something went wrong. 
+	 */
+	private StringBuilder parseOutAnimalInformation(String response) {
+		JsonNode jsonNode = null;
+		ObjectMapper om = new ObjectMapper();
+		try {
+			jsonNode = om.readValue(response, JsonNode.class);
+		} catch (IOException e) {
+			logger.warn("IOException Message: {}", e.getMessage());
+			logger.warn("Stack Trace: ", e);
+		}
+		JsonNode animals = jsonNode.get("animals");
+		StringBuilder sb = new StringBuilder();
+
+		// check if any photos are empty or null.
+		int findEmptyPhotos = 0;
+		for (JsonNode animal : animals) {
+			if (null == (animal.get("photos").get(0))) {
+				findEmptyPhotos++;
+			}
+		}
+
+		int countdown = animals.size() - findEmptyPhotos;
+		// Create Json
+		for (JsonNode animal : animals) {
+			if (null != (animal.get("photos").get(0))) {
+				if (--countdown > 0) {
+					sb.append("{\"id\":" + animal.get("id") + ",\"photos\":" + animal.get("photos") + "},");
+				} else {
+					sb.append("{\"id\":" + animal.get("id") + ",\"photos\":" + animal.get("photos") + "}");
+				}
+			}
+			logger.info("Animal id: {}", animal.get("id"));
+			logger.info("Animal photos: {}", animal.get("photos"));
+		}
+		logger.info("returning: [{}]", sb);
+		return sb;
 	}
 
 	public String getCurrentToken() {
