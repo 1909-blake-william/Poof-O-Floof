@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import model.AnimalBasic;
-import model.AnimalFull;
 import util.ConnectionUtil;
 import util.Exceptions;
 
@@ -24,12 +23,6 @@ public class AnimalDaoImpl implements AnimalDao {
 	
 	public static final String SAVE_FAVORITE = "INSERT INTO favorite (favorite_id, user_id, animal_id) " +
 		    "VALUES (favorite_id_seq.nextval, ?, ?)";
-	
-	@Override
-	public boolean saveFullAnimal(AnimalFull animalFull) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public boolean saveBasicAnimal(AnimalBasic animalBasic) {
@@ -39,8 +32,8 @@ public class AnimalDaoImpl implements AnimalDao {
 			int stIndex = 0;
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(++stIndex, animalBasic.getAnimalId());
-			ps.setString(++stIndex, animalBasic.getAnimalType());
+			ps.setInt(++stIndex, animalBasic.getId());
+			ps.setString(++stIndex, animalBasic.getType());
 			ps.setString(++stIndex, animalBasic.getSpecies());
 			ps.setString(++stIndex, animalBasic.getAge());
 			ps.setString(++stIndex, animalBasic.getGender());

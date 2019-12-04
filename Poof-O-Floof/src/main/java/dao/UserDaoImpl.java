@@ -1,10 +1,11 @@
 package dao;
 
 import model.User;
+import model.UserCreation;
 import model.UserLogin;
 
 public class UserDaoImpl implements UserDao {
-
+	
 	@Override
 	public User login(UserLogin loginCredentials) {
 		//check if user with those credentials is in database
@@ -15,7 +16,7 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean createUser(User user, UserLogin loginCredentials) {
+	public boolean createUser(UserCreation userCreation) {
 		// TODO Auto-generated method stub
 		return false;
 	}
