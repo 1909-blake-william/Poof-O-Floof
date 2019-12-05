@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LocationService } from './location.service';
+import { LocationService } from './services/location.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -10,7 +10,6 @@ import { Observable } from 'rxjs';
 })
 
 export class AppComponent implements OnInit {
-  // ipGeolocComJSON: IpGeolocComJSON;
   title = 'Poof-O-Floof';
   latitude: number;
   longitude: number;
@@ -20,9 +19,7 @@ export class AppComponent implements OnInit {
     private locService: LocationService
   ) { }
 
-  ngOnInit(): void {
-    this.printCoords();
-  }
+  ngOnInit(): void { }
 
   printCoords() {
     this.locService.getUserIpLocInfo().subscribe(

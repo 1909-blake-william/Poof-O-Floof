@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject, ReplaySubject, AsyncSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { UserIpLocInfo, IpGeolocComJSON, IpApiCoJSON } from './ipLocModels';
 
 @Injectable({ providedIn: 'root' })
