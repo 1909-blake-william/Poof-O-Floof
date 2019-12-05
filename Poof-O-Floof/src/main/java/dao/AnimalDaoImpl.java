@@ -31,13 +31,13 @@ public class AnimalDaoImpl implements AnimalDao {
 	public static final String INSERT_DAILY_LIKES = "INSERT INTO daily_likes (daily_likes_id, species, likes, current_date) " +
 			"VALUES (daily_likes_id.next, ?, 1, CURRENT_TIMESTAMP)";
 	
-	@Override
+	//deprecated, probably broken
 	public boolean saveFullAnimal(AnimalFull animalFull) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	//deprecated, probably broken
 	public boolean saveBasicAnimal(AnimalBasic animalBasic) {
 		try(Connection conn = ConnectionUtil.getConnection()){
 			String sql = SAVE_ANIMAL;
@@ -45,12 +45,12 @@ public class AnimalDaoImpl implements AnimalDao {
 			int stIndex = 0;
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(++stIndex, animalBasic.getAnimalId());
-			ps.setString(++stIndex, animalBasic.getAnimalType());
+			ps.setInt(++stIndex, animalBasic.getId());
+			ps.setString(++stIndex, animalBasic.getType());
 			ps.setString(++stIndex, animalBasic.getSpecies());
-			ps.setInt(++stIndex, animalBasic.getAge());
+			ps.setString(++stIndex, animalBasic.getAge());
 			ps.setString(++stIndex, animalBasic.getGender());
-			ps.setDouble(++stIndex, animalBasic.getSize());
+			ps.setString(++stIndex, animalBasic.getSize());
 			
 			return ps.executeUpdate() == 1;
 			

@@ -113,7 +113,6 @@ public class PetFinderConnectionUtil {
 	 * @throws MalformedURLException
 	 */
 	public String requestAnimalsByLocation(String location, int radius) throws MalformedURLException {
-		JsonNode jsonNode = null;
 		String params = String.format("?location=%s&radius=%d", location, radius);
 		URL apiUrl = new URL(PET_FINDER_API_ANIMALS + params);
 		BufferedReader reader = null;
