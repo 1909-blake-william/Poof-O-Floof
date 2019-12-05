@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+
 import { MainPhotoComponent } from './main-photo/main-photo.component';
 import { SocialMediaComponent } from './social-media/social-media.component';
 // import social buttons module
@@ -14,8 +15,8 @@ import { PinterestComponent } from './pinterest/pinterest.component';
 
 @NgModule({
   imports: [
-    HttpClientModule,
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: MainPhotoComponent },
       { path: 'social-media', component: SocialMediaComponent },

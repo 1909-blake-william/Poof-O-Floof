@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { LocationService } from './services/location.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,29 +9,24 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'Poof-O-Floof';
   latitude: number;
   longitude: number;
 
-  getLocationByPermission(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-      });
-    } else {
-      console.log('No support for geolocation');
-    }
-  }
+  constructor(
+    private http: HttpClient,
+    private locService: LocationService
+  ) { }
 
-  printLocation() {
-    if (!this.latitude || !this.longitude) {
-      console.log('location is not defined');
-    } else {
-      console.log(`${this.latitude},${this.longitude}`);
-    }
+  ngOnInit(): void { }
+
+  printCoords() {
+    this.locService.getUserIpLocInfo().subscribe(
+      (data) => {
+        console.log(data);
+      }
+    );
   }
 
 }
-
