@@ -113,7 +113,6 @@ public class PetFinderConnectionUtil {
 	 * @throws MalformedURLException
 	 */
 	public String requestAnimalsByLocation(String location, int radius) throws MalformedURLException {
-		JsonNode jsonNode = null;
 		String params = String.format("?location=%s&radius=%d", location, radius);
 		URL apiUrl = new URL(PET_FINDER_API_ANIMALS + params);
 		BufferedReader reader = null;
@@ -146,10 +145,11 @@ public class PetFinderConnectionUtil {
 
 	/**
 	 * This will build a JSON out of the response from petfinder.com for our needs.
-	 * id and photos.
-	 * If there is an animal without photos, that animal will be removed from the creation.
-	 * @param response = the information from petfinder.com 
-	 * @return StringBuilder JSON value OR NULL. if null something went wrong. 
+	 * id and photos. If there is an animal without photos, that animal will be
+	 * removed from the creation.
+	 * 
+	 * @param response = the information from petfinder.com
+	 * @return StringBuilder JSON value OR NULL. if null something went wrong.
 	 */
 	private StringBuilder parseOutAnimalInformation(String response) {
 		JsonNode jsonNode = null;
@@ -162,27 +162,26 @@ public class PetFinderConnectionUtil {
 		}
 		JsonNode animals = jsonNode.get("animals");
 		StringBuilder sb = new StringBuilder();
-
-		// check if any photos are empty or null.
-		int findEmptyPhotos = 0;
-		for (JsonNode animal : animals) {
-			if (null == (animal.get("photos").get(0))) {
-				findEmptyPhotos++;
-			}
-		}
-
-		int countdown = animals.size() - findEmptyPhotos;
+		boolean firstForPassed = false;
 		// Create Json
 		for (JsonNode animal : animals) {
 			if (null != (animal.get("photos").get(0))) {
-				if (--countdown > 0) {
-					sb.append("{\"id\":" + animal.get("id") + ",\"photos\":" + animal.get("photos") + "},");
-				} else {
-					sb.append("{\"id\":" + animal.get("id") + ",\"photos\":" + animal.get("photos") + "}");
+				for (JsonNode photo : animal.get("photos")) {
+					if (firstForPassed) {
+						sb.append(",");
+					}
+					String urlString = "" + photo.get("full");
+					String[] urlArray = urlString.split("=");
+					if (urlArray.length > 1) {
+						String photoId = urlArray[1];
+						sb.append("{\"id\":" + animal.get("id") + ",\"photoId\":" + photoId + ",\"fullUrl\":" + urlString + "}");
+						logger.info("\n{\n\t\"id\":" + animal.get("id") 
+									+ ",\n\t\"photoId\":" + photoId 
+									+ ",\n\t\"fullUrl\":" + urlString + "\n},");
+					}
 				}
+				firstForPassed = true;
 			}
-			logger.info("Animal id: {}", animal.get("id"));
-			logger.info("Animal photos: {}", animal.get("photos"));
 		}
 		logger.info("returning: [{}]", sb);
 		return sb;

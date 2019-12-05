@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This will automatically filter the https request.
+ * @author Tim
+ *
+ */
 public class CorsFilter implements Filter {
 	
 	private final Logger logger = LogManager.getLogger(getClass());

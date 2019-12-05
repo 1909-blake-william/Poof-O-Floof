@@ -15,6 +15,7 @@ public class DispatcherChain implements Dispatcher {
 		this.dispatchers = new ArrayList<>();
 		this.dispatchers.add(new InteractionDispatcher());
 		this.dispatchers.add(new AuthDispatcher());
+		this.dispatchers.add(new LocationDispatcher());
 	}
 
 	@Override

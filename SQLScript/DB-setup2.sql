@@ -21,7 +21,8 @@ CREATE TABLE users (
     salt varchar2(50) NOT NULL                  -- = 
 );
 
-
+INSERT INTO users (user_id, current_ip, current_ip_location, display_name, email, secure_key, salt)
+    VALUES (user_id_seq.nextval, '?', '?', '?', '?', '?', '?');
 
 -- animal_id can be linked to the id we get off of petfinder.com --
 -- store basic information users might be interested.
