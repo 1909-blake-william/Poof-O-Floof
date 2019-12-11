@@ -2,21 +2,20 @@
   Get Next Random Photo
 </button>
 <br />
+<button (click)="addMorePhotos()">
+  Force Adding More Photos
+</button>
 <br />
-
 <div>
-  <!-- <h3>lastPhotoBundleSize: {{this.psCurrentState.lastPhotoBundleSize}}</h3> -->
-  <h3>photoDisplayIndex: {{photoDisplayIndex}}</h3>
-
-  <h3>photoStreamIndex: {{photoStreamIndex}}</h3>
-  <h3>mainFramePhotoUrl: {{mainFramePhotoUrl}}</h3>
-  <h3>type: {{mainFramePhotoType}}</h3>
+  <p>totalPhotoNumber: {{totPhotoNum}}, lastBundleSize: {{photoBundleSize}}</p>
+  <p>photoDisplayIndex: {{photoDisplayIndex}}, photoStreamIndex: {{photoStreamIndex}}</p>
+  <p>type: {{mainFramePhotoType}}</p>
   <img src="{{mainFramePhotoUrl}}">
 </div>
 
 <br />
 <button (click)="addToFavorites()">
-    Favorite Photo
+  Favorite Photo
 </button>
 <br />
 
